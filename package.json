@@ -1,0 +1,27 @@
+{
+  "name": "express-api-monitor",
+  "version": "1.0.0",
+  "description": "A simple middleware that returns the availability of the API and related services.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/piraveen/express-api-monitor.git"
+  },
+  "keywords": [
+    "node",
+    "api",
+    "status",
+    "express",
+    "monitoring",
+    "API-status"
+  ],
+  "author": "Piraveen Kamalathas (https://github.com/piraveen)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/piraveen/express-api-monitor/issues"
+  },
+  "homepage": "https://github.com/piraveen/express-api-monitor#readme"
+}
