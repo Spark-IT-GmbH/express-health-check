@@ -5,13 +5,13 @@ A simple middleware that returns the availability of the API and related service
 
 Install with:
 ```
-npm install --save express-api-monitor
+npm install --save @4dims/express-status-monitor
 ```
 
 Use it in your express app:
 ```
 const app = require('express')();
-const statusMonitor = require('express-api-monitor');
+const statusMonitor = require('@4dims/express-status-monitor');
 
 // Default
 app.use(statusMonitor());
