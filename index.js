@@ -154,7 +154,7 @@ const getSystemStatusInfo = (config, data) => {
  * @returns {Promise}
  */
 const buildResponse = (config) => {
-  return new Promise((resolve) => {
+  return new Promise(async (resolve) => {
     let data = Object.assign({ status: 200, health: "ok" }, config.extras);
 
     if (config.api) data.api = true;
@@ -164,7 +164,7 @@ const buildResponse = (config) => {
       data.db_status = "unknown";
       getMongooseStatus(config, data);
       getSequelizeStatus(config, data);
-      getIORedisStatus(config, data);
+      await getIORedisStatus(config, data);
     }
 
     getSystemStatusInfo(config, data);
