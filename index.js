@@ -190,4 +190,4 @@ const MiddlewareWrapper = (config) => {
   return middleware;
 };
 
-module.exports = MiddlewareWrapper;
+module.exports = { MiddlewareWrapper };

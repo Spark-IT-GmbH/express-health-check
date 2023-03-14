@@ -1,6 +1,6 @@
 {
   "name": "@sparkit-gmbh/express-health-check",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A simple middleware that returns the availability of the API and related services.",
   "main": "./index.js",
   "typings": "./express-health-check.d.ts",
