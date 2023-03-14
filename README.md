@@ -1,4 +1,4 @@
-# express-api-monitor
+# express-health-check
 
 A simple middleware that returns the availability of the API and related services.
 
@@ -19,7 +19,7 @@ const statusMonitor = require('@sparkit-gmbh/express-health-check');
 // Default
 app.use(statusMonitor());
 
-// With DB Monitor (Mongoose / Sequelize)
+// With DB Monitor (Mongoose / Sequelize / IORedis)
 
 // With Custom URL Path
 app.use(status({ path: '/api/status', db: true }));
@@ -46,6 +46,12 @@ app.listen(3000, function () {
 
 ```
 { api: true }
+```
+
+### System Monitoring: Enable/Disable
+
+```
+{ system: true }
 ```
 
 ### DB Monitoring: Enable/Disable

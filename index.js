@@ -1,4 +1,5 @@
 "use strict";
+const os = require("os");
 
 /**
  * Mongoose connection Statuses
@@ -110,6 +111,43 @@ const getIORedisStatus = async (config, data) => {
   }
 };
 
+const getMemorySize = (memoryUnit) => {
+  let mem_in_kb = memoryUnit / 1024;
+  let mem_in_mb = mem_in_kb / 1024;
+  let mem_in_gb = mem_in_mb / 1024;
+
+  mem_in_kb = Math.floor(mem_in_kb);
+  mem_in_mb = Math.floor(mem_in_mb);
+  mem_in_gb = Math.floor(mem_in_gb);
+
+  mem_in_mb = mem_in_mb % 1024;
+  mem_in_kb = mem_in_kb % 1024;
+
+  return "Memory: " + mem_in_gb + "GB " + mem_in_mb + "MB " + mem_in_kb + "KB";
+};
+
+/**
+ * Build system status info
+ * @param {Object} config
+ * @param {Object} data Response object
+ */
+const getSystemStatusInfo = (config, data) => {
+  if (config.system) {
+    const upTime = Math.fround(process.uptime() / 60).toFixed(2);
+    const [load1min, load5mins, load15mins] = os.loadavg();
+
+    data.system = {
+      load1min,
+      load5mins,
+      load15mins,
+      uptime:
+        upTime > 60 ? `${Math.round(upTime / 60)} hour(s)` : `${upTime} min(s)`,
+      totalmem: getMemorySize(os.totalmem()),
+      freemem: getMemorySize(os.freemem()),
+    };
+  }
+};
+
 /**
  * Build output response based on user configuration
  * @param {Object} config
@@ -120,6 +158,7 @@ const buildResponse = (config) => {
     let data = Object.assign({ status: 200, health: "ok" }, config.extras);
 
     if (config.api) data.api = true;
+
     if (config.db) {
       data.db = false;
       data.db_status = "unknown";
@@ -127,6 +166,8 @@ const buildResponse = (config) => {
       getSequelizeStatus(config, data);
       getIORedisStatus(config, data);
     }
+
+    getSystemStatusInfo(config, data);
 
     return resolve(data);
   });
