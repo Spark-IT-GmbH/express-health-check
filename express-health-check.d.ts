@@ -10,7 +10,5 @@ declare module '@sparkit-gmbh/express-health-check' {
 
     export type MiddlewareWrapperReturn = (req: Express.Request, res: Express.Response, next: NextFunction) => void;
     
-    export interface MiddlewareWrapper {
-        constructor(config: MiddlewareWrapperConfig);
-    }
+    export function MiddlewareWrapper(config: MiddlewareWrapperConfig): MiddlewareWrapperReturn;
 }
