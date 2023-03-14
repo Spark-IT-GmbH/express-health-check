@@ -1,6 +1,6 @@
 {
-  "name": "@4dims/express-status-monitor",
-  "version": "1.0.1",
+  "name": "@sparkit-gmbh/express-health-check",
+  "version": "0.0.1",
   "description": "A simple middleware that returns the availability of the API and related services.",
   "main": "index.js",
   "scripts": {
@@ -8,20 +8,24 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/piraveen/express-api-monitor.git"
+    "url": "git+https://github.com/Spark-IT-GmbH/express-health-check.git"
   },
   "keywords": [
     "node",
     "api",
     "status",
     "express",
+    "health check",
+    "mongoose",
+    "ioredis",
+    "sequelize",
     "monitoring",
     "API-status"
   ],
   "author": "Piraveen Kamalathas (https://github.com/piraveen)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/piraveen/express-api-monitor/issues"
+    "url": "https://github.com/Spark-IT-GmbH/express-health-check/issues"
   },
-  "homepage": "https://github.com/piraveen/express-api-monitor#readme"
+  "homepage": "https://github.com/Spark-IT-GmbH/express-health-check#readme"
 }

@@ -1,17 +1,20 @@
 # express-api-monitor
+
 A simple middleware that returns the availability of the API and related services.
 
 # Getting started
 
 Install with:
+
 ```
-npm install --save @4dims/express-status-monitor
+npm install --save @sparkit-gmbh/express-health-check
 ```
 
 Use it in your express app:
+
 ```
 const app = require('express')();
-const statusMonitor = require('@4dims/express-status-monitor');
+const statusMonitor = require('@sparkit-gmbh/express-health-check');
 
 // Default
 app.use(statusMonitor());
@@ -32,32 +35,42 @@ app.listen(3000, function () {
 ```
 
 # Options
+
 ### Custom URL Path
+
 ```
 { path: '/status'}
 ```
 
 ### API Monitoring: Enable/Disable
+
 ```
 { api: true }
 ```
 
 ### DB Monitoring: Enable/Disable
+
 ```
 { db: true }
 ```
 
 If DB is set to `true`, a DB instance should be provided
+
 - Mongoose `{ mongoose: mongoose }`
 - Sequelize `{ sequelize: sequelize }`
+- IORedis `{ ioredis: ioredisInstance }`
 
 #### DB Monitoring support
+
 - [x] Mongoose ORM (MongoDB)
 - [x] Sequelize ORM (MySQL, PostgreSQL, SQlite, ...)
+- [x] IORedis (Redis)
 - [ ] MongoDB (coming soon)
 
 ### Extras
+
 You can return any JSON data with the extras property
+
 ```
 {
     extras: {
@@ -69,7 +82,9 @@ You can return any JSON data with the extras property
 ```
 
 ### Feedback
-Suggestions or improvements are most welcomed ! Open an [issue](https://github.com/piraveen/express-status-monitor/issues) if you want to help.
+
+Suggestions or improvements are most welcomed ! Open an [issue](https://github.com/Spark-IT-GmbH/express-health-check/issues) if you want to help.
 
 ### Author
+
 Piraveen Kamalathas <https://github.com/piraveen>
