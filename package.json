@@ -1,11 +1,21 @@
 {
   "name": "@sparkit-gmbh/express-health-check",
-  "version": "1.0.3",
+  "version": "2.0.0",
   "description": "A simple middleware that returns the availability of the API and related services.",
   "main": "./index.js",
   "typings": "./express-health-check.d.ts",
+  "files": [
+    "index.js",
+    "express-health-check.d.ts"
+  ],
+  "engines": {
+    "node": ">=24.0.0"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "npm run test:coverage && npm run test:types",
+    "test:unit": "node --test test.js",
+    "test:coverage": "node --test --experimental-test-coverage --test-coverage-include=index.js --test-coverage-lines=95 --test-coverage-functions=100 --test-coverage-branches=90 test.js",
+    "test:types": "tsc --project test/types/express4/tsconfig.json && tsc --project test/types/express5/tsconfig.json"
   },
   "repository": {
     "type": "git",
@@ -30,6 +40,13 @@
   },
   "homepage": "https://github.com/Spark-IT-GmbH/express-health-check#readme",
   "devDependencies": {
-    "express": "^4.18.2"
+    "@types/express4": "npm:@types/express@^4.17.0",
+    "@types/express5": "npm:@types/express@^5.0.0",
+    "express4": "npm:express@^4.21.0",
+    "express5": "npm:express@^5.0.0",
+    "typescript": "^5.9.0"
+  },
+  "peerDependencies": {
+    "express": ">=4 <6"
   }
 }

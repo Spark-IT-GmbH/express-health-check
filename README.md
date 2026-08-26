@@ -2,6 +2,8 @@
 
 A simple middleware that returns the availability of the API and related services.
 
+Supports Node.js 24 LTS and Express.js 4 or 5.
+
 # Getting started
 
 Install with:
@@ -14,15 +16,16 @@ Use it in your express app:
 
 ```
 const app = require('express')();
-const statusMonitor = require('@sparkit-gmbh/express-health-check');
+const healthCheck = require('@sparkit-gmbh/express-health-check');
 
 // Default
-app.use(statusMonitor());
+app.use(healthCheck());
 
 // With DB Monitor (Mongoose / Sequelize / IORedis)
+app.use(healthCheck({ db: true, mongoose }));
 
 // With Custom URL Path
-app.use(status({ path: '/api/status', db: true }));
+app.use(healthCheck({ path: '/api/status' }));
 
 // respond with "hello world" when a GET request is made to the homepage
 app.get('/', function(req, res) {
@@ -72,6 +75,19 @@ If DB is set to `true`, a DB instance should be provided
 - [x] Sequelize ORM (MySQL, PostgreSQL, SQlite, ...)
 - [x] IORedis (Redis)
 - [ ] MongoDB (coming soon)
+
+### TypeScript
+
+The package includes declarations for all middleware options and supports the
+Express 4 and Express 5 type definitions.
+
+```ts
+import express = require('express');
+import healthCheck = require('@sparkit-gmbh/express-health-check');
+
+const app = express();
+app.use(healthCheck({ path: '/health', system: true }));
+```
 
 ### Extras
 
