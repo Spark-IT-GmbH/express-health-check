@@ -4,6 +4,9 @@ A simple middleware that returns the availability of the API and related service
 
 Supports Node.js 24 LTS and Express.js 4 or 5.
 
+Full documentation is available in the
+[GitHub Wiki](https://github.com/Spark-IT-GmbH/express-health-check/wiki).
+
 # Getting started
 
 Install with:
