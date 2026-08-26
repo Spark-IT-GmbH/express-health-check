@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "baseUrl": "../../..",
+    "esModuleInterop": true,
+    "module": "commonjs",
+    "noEmit": true,
+    "paths": {
+      "express": ["node_modules/@types/express5"]
+    },
+    "strict": true,
+    "target": "ES2022"
+  },
+  "include": ["index.ts"]
+}
