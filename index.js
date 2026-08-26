@@ -26,20 +26,32 @@ const defaultConfig = {
  * @param {Object} config
  */
 const validateConfiguration = (config) => {
-  if (!config) return defaultConfig;
+  const overrides = config && typeof config === "object" ? config : {};
 
-  config.path =
-    typeof config.path === "string" ? config.path : defaultConfig.path;
-  config.extras =
-    typeof config.extras === "object" ? config.extras : defaultConfig.extras;
-  config.api = typeof config.api === "boolean" ? config.api : defaultConfig.api;
-  config.db = typeof config.db === "boolean" ? config.db : defaultConfig.db;
-  config.mongoose =
-    typeof config.mongoose === "object" ? config.mongoose : null;
-  config.sequelize =
-    typeof config.sequelize === "object" ? config.sequelize : null;
-  config.ioredis = typeof config.ioredis === "object" ? config.ioredis : null;
-  return config;
+  return {
+    ...overrides,
+    path:
+      typeof overrides.path === "string" ? overrides.path : defaultConfig.path,
+    extras:
+      overrides.extras && typeof overrides.extras === "object"
+        ? overrides.extras
+        : defaultConfig.extras,
+    api:
+      typeof overrides.api === "boolean" ? overrides.api : defaultConfig.api,
+    db: typeof overrides.db === "boolean" ? overrides.db : defaultConfig.db,
+    mongoose:
+      overrides.mongoose && typeof overrides.mongoose === "object"
+        ? overrides.mongoose
+        : null,
+    sequelize:
+      overrides.sequelize && typeof overrides.sequelize === "object"
+        ? overrides.sequelize
+        : null,
+    ioredis:
+      overrides.ioredis && typeof overrides.ioredis === "object"
+        ? overrides.ioredis
+        : null,
+  };
 };
 
 /**
@@ -62,18 +74,16 @@ const getMongooseStatus = (config, data) => {
  * @param {Object} config
  * @param {Object} data Response object
  */
-const getSequelizeStatus = (config, data) => {
+const getSequelizeStatus = async (config, data) => {
   if (config.sequelize && config.sequelize.authenticate) {
-    config.sequelize
-      .authenticate()
-      .then(function (err) {
-        data.db_sequelize = true;
-        data.db_sequelize_status = "connected";
-      })
-      .catch(function (err) {
-        data.db_sequelize = false;
-        data.db_sequelize_status = "disconnected";
-      });
+    try {
+      await config.sequelize.authenticate();
+      data.db_sequelize = true;
+      data.db_sequelize_status = "connected";
+    } catch (err) {
+      data.db_sequelize = false;
+      data.db_sequelize_status = "disconnected";
+    }
 
     delete data.db;
     delete data.db_status;
@@ -153,35 +163,33 @@ const getSystemStatusInfo = (config, data) => {
  * @param {Object} config
  * @returns {Promise}
  */
-const buildResponse = (config) => {
-  return new Promise(async (resolve) => {
-    let data = Object.assign({ status: 200, health: "ok" }, config.extras);
+const buildResponse = async (config) => {
+  const data = Object.assign({ status: 200, health: "ok" }, config.extras);
 
-    if (config.api) data.api = true;
+  if (config.api) data.api = true;
 
-    if (config.db) {
-      data.db = false;
-      data.db_status = "unknown";
-      getMongooseStatus(config, data);
-      getSequelizeStatus(config, data);
-      await getIORedisStatus(config, data);
-    }
+  if (config.db) {
+    data.db = false;
+    data.db_status = "unknown";
+    getMongooseStatus(config, data);
+    await getSequelizeStatus(config, data);
+    await getIORedisStatus(config, data);
+  }
 
-    getSystemStatusInfo(config, data);
+  getSystemStatusInfo(config, data);
 
-    return resolve(data);
-  });
+  return data;
 };
 
 const MiddlewareWrapper = (config) => {
   const validatedConfig = validateConfiguration(config);
   const middleware = (req, res, next) => {
     if (req.path === validatedConfig.path) {
-      buildResponse(validatedConfig).then((data) => {
-        res.send(data).end();
-      });
+      return buildResponse(validatedConfig)
+        .then((data) => res.send(data))
+        .catch(next);
     } else {
-      next();
+      return next();
     }
   };
 
@@ -190,4 +198,5 @@ const MiddlewareWrapper = (config) => {
   return middleware;
 };
 
-module.exports = { MiddlewareWrapper };
+module.exports = MiddlewareWrapper;
+module.exports.MiddlewareWrapper = MiddlewareWrapper;
